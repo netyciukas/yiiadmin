@@ -6,13 +6,19 @@
     $cs->registerScriptFile($this->module->assetsUrl.'/tinymce/jscripts/tiny_mce/jquery.tinymce.js'); 
     $cs->registerScriptFile($this->module->assetsUrl.'/tinymce_setup/tinymce_setup.js');
 
+    $plugins = scandir(Yii::app()->getModule('yiiadmin')->getBasePath().'/assets/widget_plugins');
+    foreach ($plugins as $plugin) {
+        if ($plugin != '.' && $plugin != '..')
+            $cs->registerScriptFile($this->module->assetsUrl.'/widget_plugins/'.$plugin);
+    }
+
     foreach ($model->rules() as $rule)
     {
         // Атрибуты поиска нас не интерисуют.
         if ($rule['on']!='search')
             $attr_string.=$rule[0].',';
     }
-    
+
     // TODO: unset primaryKey;
     $attributes=array_filter(array_unique(array_map('trim',explode(',',$attr_string))));
 ?>
@@ -30,8 +36,8 @@
         <div class="form-container">
         <div>
         <fieldset class="module wide">
-        <?php  
-            foreach ($attributes as $attribute): 
+        <?php
+            foreach ($attributes as $attribute):
             if( $model->tableSchema->columns[$attribute]->isPrimaryKey===true)
                 continue;
         ?>

@@ -157,6 +157,10 @@ class YiiadminModule extends CWebModule
                 return $form->checkBox($model,$attribute); 
             break;
 
+            case 'stringsArray':
+                return $form->textField($model,$attribute,array('class'=>'stringsArray'));
+            break;
+
             default: 
                 return $form->textField($model,$attribute,array('class'=>'vTextField')); 
             break;
